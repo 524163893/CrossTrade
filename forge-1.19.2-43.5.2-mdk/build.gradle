@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle' version '6.0.+'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = "com.crosstrade"
+version = "1.0.0"
+archivesBaseName = "CrossTrade-Forge"
+
+minecraft {
+    mappings channel: 'official', version: '1.19.2'
+
+    runs {
+        client {
+            workingDirectory project.file('run/client')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'info'
+        }
+        server {
+            workingDirectory project.file('run/server')
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.console.level', 'info'
+        }
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.19.2-43.5.2'
+
+    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-common:1.8.22'
+
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.8.22'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources']
+            include '**/*.toml'
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+shadowJar {
+    archiveBaseName.set(archivesBaseName)
+    archiveClassifier.set("shadow")
+    archiveVersion.set(version)
+
+    dependencies {
+        include(dependency('com.squareup.okhttp3:okhttp:4.12.0'))
+        include(dependency('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20'))
+        include(dependency('org.jetbrains.kotlin:kotlin-stdlib:1.9.20'))
+        include(dependency('org.jetbrains.kotlin:kotlin-stdlib-common:1.9.20'))
+    }
+
+    relocate 'okio', 'com.crosstrade.okio'
+    relocate 'kotlin', 'com.crosstrade.kotlin'
+}
+
+build.dependsOn(shadowJar)

@@ -1,0 +1,13 @@
+license="MIT"
+
+modLoader="javafml"
+loaderVersion="[43,)"
+[[mods]]
+modId="crosstradeforge"
+version="1.0.0"
+displayName="CrossTradeForge"
+[[dependencies.crosstradeforge]]
+modId="forge"
+mandatory=true
+versionRange="[43,)"
+side="SERVER"
